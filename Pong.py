@@ -38,6 +38,14 @@ paletka1_prost = paletka1_obr.get_rect()
 paletka1_prost.x = PALETKA_1_POZ[0]
 paletka1_prost.y = PALETKA_1_POZ[1]
 
+PALETKA_2_POZ = (350, 20) #początkowa pozycja paletki npc
+paletka2_obr = pygame.Surface([PALETKA_SZER, PALETKA_WYS])
+paletka2_obr.fill(RED)
+paletka2_prost = paletka2_obr.get_rect()
+paletka2_prost.x = PALETKA_2_POZ[0]
+paletka2_prost.y = PALETKA_2_POZ[1]
+
+AI_PREDKOSC = 3
 
 #inicjacja piłki
 #szerokość, wysokość prędkość pozioma(X) i pionowa (Y) piłki
@@ -63,15 +71,34 @@ while True :
             myszaX, myszaY = event.pos
 
             przesuniecie = myszaX-(PALETKA_SZER/2)
+
             if przesuniecie > OKNOGRY_SZER - PALETKA_SZER:
                 przesuniecie = OKNOGRY_SZER - PALETKA_SZER
             if przesuniecie < 0:
                 przesuniecie = 0
             paletka1_prost.x = przesuniecie
 
+            # sprawdzaj kolizje piłki z obiektami
+            if pilka_prost.right >= OKNOGRY_SZER :
+                PILKA_PREDKOSC_X *= -1
+
+            if pilka_prost.left <= 0 :
+                PILKA_PREDKOSC_X *= -1
+
+            if pilka_prost.colliderect(paletka1_prost) :
+                PILKA_PREDKOSC_Y *= -1
+                # uwzględni nachodzenie piłki na paletkę
+                pilka_prost.bottom = paletka1_prost.top
+            if pilka_prost.colliderect(paletka2_prost) :
+                PILKA_PREDKOSC_Y *= -1
+                # uwzględni nachodzenie piłki na paletkę
+                pilka_prost.bottom = paletka2_prost.top
+
+
 
     OKNOGRY.fill(LT_BLUE) #kolor okna gry
     OKNOGRY.blit(paletka1_obr, paletka1_prost) # narysuj w oknie gry paletkę
+    OKNOGRY.blit(paletka2_obr, paletka2_prost) # narysuj paletkę NPC.
     OKNOGRY.blit(pilka_obr, pilka_prost) # narysuj piłkę
 
     # przesun piłke po zdarzeniu
