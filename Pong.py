@@ -78,34 +78,34 @@ while True:
                 przesuniecie = 0
             paletka1_prost.x = przesuniecie
 
-        # AI
-        if pilka_prost.centerx > paletka2_prost.centerx:
-            paletka2_prost.x += AI_PREDKOSC
-        elif pilka_prost.centerx < paletka2_prost.centerx:
-            paletka2_prost.x -= AI_PREDKOSC
+    # AI
+    if pilka_prost.centerx > paletka2_prost.centerx:
+        paletka2_prost.x += AI_PREDKOSC
+    elif pilka_prost.centerx < paletka2_prost.centerx:
+         paletka2_prost.x -= AI_PREDKOSC
 
         # sprawdzaj kolizje piłki z obiektami
-        if pilka_prost.right >= OKNOGRY_SZER:
-            PILKA_PREDKOSC_X *= -1
+    if pilka_prost.right >= OKNOGRY_SZER:
+        PILKA_PREDKOSC_X *= -1
 
-        if pilka_prost.left <= 0:
-            PILKA_PREDKOSC_X *= -1
+    if pilka_prost.left <= 0:
+        PILKA_PREDKOSC_X *= -1
 
-        if pilka_prost.colliderect(paletka1_prost) :
-            PILKA_PREDKOSC_Y *= -1
-            # uwzględni nachodzenie piłki na paletkę
-            pilka_prost.bottom = paletka1_prost.top
-        if pilka_prost.colliderect(paletka2_prost) :
-            PILKA_PREDKOSC_Y *= -1
-            # uwzględni nachodzenie piłki na paletkę
-            pilka_prost.bottom = paletka2_prost.bottom
-        # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
-        if pilka_prost.top <= 0:
-            pilka_prost.x = OKNOGRY_SZER/2
-            pilka_prost.y = OKNOGRY_WYS/2
-        if pilka_prost.bottom >= OKNOGRY_WYS:
-            pilka_prost.x = OKNOGRY_SZER/2
-            pilka_prost.y = OKNOGRY_WYS/2
+    if pilka_prost.colliderect(paletka1_prost) :
+        PILKA_PREDKOSC_Y *= -1
+        # uwzględni nachodzenie piłki na paletkę
+        pilka_prost.bottom = paletka1_prost.top
+    if pilka_prost.colliderect(paletka2_prost) :
+        PILKA_PREDKOSC_Y *= -1
+        # uwzględni nachodzenie piłki na paletkę
+        pilka_prost.bottom = paletka2_prost.bottom
+    # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
+    if pilka_prost.top <= 0:
+        pilka_prost.x = OKNOGRY_SZER/2
+        pilka_prost.y = OKNOGRY_WYS/2
+    if pilka_prost.bottom >= OKNOGRY_WYS:
+        pilka_prost.x = OKNOGRY_SZER/2
+        pilka_prost.y = OKNOGRY_WYS/2
 
 
 
