@@ -98,7 +98,7 @@ while True:
     if pilka_prost.colliderect(paletka2_prost) :
         PILKA_PREDKOSC_Y *= -1
         # uwzględni nachodzenie piłki na paletkę
-        pilka_prost.bottom = paletka2_prost.bottom
+        pilka_prost.top = paletka2_prost.bottom
     # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
     if pilka_prost.top <= 0:
         pilka_prost.x = OKNOGRY_SZER/2
