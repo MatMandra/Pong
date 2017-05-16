@@ -98,10 +98,16 @@ while True:
             paletka1_prost.x = przesuniecie
 
     # Sterowanie paletką nr 2 Strzałkami lewo prawo
-    if pygame.key.get_pressed()[K_RIGHT] :
-         paletka2_prost.x += 15
+    if pygame.key.get_pressed()[K_RIGHT]:
+         if paletka2_prost.x > OKNOGRY_SZER - PALETKA_SZER:
+             paletka2_prost = paletka2_prost
+         else:
+             paletka2_prost.x += 15
     if pygame.key.get_pressed()[K_LEFT]:
-        paletka2_prost.x -= 15
+        if paletka2_prost.x < 0:
+            paletka2_prost = paletka2_prost
+        else:
+            paletka2_prost.x -= 15
     # AI
    # if pilka_prost.centerx > paletka2_prost.centerx:
    #     paletka2_prost.x += AI_PREDKOSC
