@@ -97,11 +97,16 @@ while True:
                 przesuniecie = 0
             paletka1_prost.x = przesuniecie
 
+    # Sterowanie paletką nr 2 Strzałkami lewo prawo
+    if pygame.key.get_pressed()[K_RIGHT] :
+         paletka2_prost.x += 15
+    if pygame.key.get_pressed()[K_LEFT]:
+        paletka2_prost.x -= 15
     # AI
-    if pilka_prost.centerx > paletka2_prost.centerx:
-        paletka2_prost.x += AI_PREDKOSC
-    elif pilka_prost.centerx < paletka2_prost.centerx:
-         paletka2_prost.x -= AI_PREDKOSC
+   # if pilka_prost.centerx > paletka2_prost.centerx:
+   #     paletka2_prost.x += AI_PREDKOSC
+   # elif pilka_prost.centerx < paletka2_prost.centerx:
+   #     paletka2_prost.x -= AI_PREDKOSC
 
     # sprawdzaj kolizje piłki z obiektami
     if pilka_prost.right >= OKNOGRY_SZER:
@@ -112,11 +117,13 @@ while True:
 
     if pilka_prost.colliderect(paletka1_prost) :
         PILKA_PREDKOSC_Y *= -1
+
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.bottom = paletka1_prost.top
 
     if pilka_prost.colliderect(paletka2_prost) :
         PILKA_PREDKOSC_Y *= -1
+
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.top = paletka2_prost.bottom
     # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
