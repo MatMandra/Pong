@@ -17,7 +17,7 @@ OKNOGRY = pygame.display.set_mode((OKNOGRY_SZER , OKNOGRY_WYS), 0, 32)
 # tytuł okna gry
 pygame.display.set_caption('Prosty Pong')
 
-# kolory wykorzystywane w grzem składowe RG zapisane w tuplach
+# kolory wykorzystywane w grze składowe RGB zapisane w tuplach
 LT_BLUE = (230, 255, 255)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -141,6 +141,8 @@ while True:
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
         GRACZ_2_PKT = str(int(GRACZ_2_PKT)+1)
+    if pygame.key.get_pressed()[K_ESCAPE]:
+        quit()
 
 
 
