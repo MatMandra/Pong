@@ -1,4 +1,4 @@
-import pygame , sys
+import pygame , sys, random
 from pygame.locals import *
 
 # inicjacja moduły pygame
@@ -86,17 +86,29 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == MOUSEMOTION:
-            myszaX, myszaY = event.pos
+       # if event.type == MOUSEMOTION:
+       #     myszaX, myszaY = event.pos
 
-            przesuniecie = myszaX-(PALETKA_SZER/2)
+       #     przesuniecie = myszaX-(PALETKA_SZER/2)
 
-            if przesuniecie > OKNOGRY_SZER - PALETKA_SZER:
-                przesuniecie = OKNOGRY_SZER - PALETKA_SZER
-            if przesuniecie < 0:
-                przesuniecie = 0
-            paletka1_prost.x = przesuniecie
+       #     if przesuniecie > OKNOGRY_SZER - PALETKA_SZER:
+       #         przesuniecie = OKNOGRY_SZER - PALETKA_SZER
+      #      if przesuniecie < 0:
+       #         przesuniecie = 0
+       #     paletka1_prost.x = przesuniecie
 
+    # Sterowanie paletką nr 1 / Klawisze Strzałkami a-lewo d-prawo
+    if pygame.key.get_pressed()[K_d]:
+         if paletka1_prost.x > OKNOGRY_SZER - PALETKA_SZER:
+             paletka1_prost = paletka1_prost
+         else:
+             paletka1_prost.x += 15
+    if pygame.key.get_pressed()[K_a]:
+        if paletka1_prost.x < 0:
+            paletka1_prost = paletka1_prost
+        else:
+            paletka1_prost.x -= 15
+			
     # Sterowanie paletką nr 2 Strzałkami lewo prawo
     if pygame.key.get_pressed()[K_RIGHT]:
          if paletka2_prost.x > OKNOGRY_SZER - PALETKA_SZER:
@@ -133,14 +145,21 @@ while True:
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.top = paletka2_prost.bottom
     # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
+    
     if pilka_prost.top <= 0:
+        Testowa = random.randint(-1,0)
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
         GRACZ_1_PKT = str(int(GRACZ_1_PKT)+1)
+        PILKA_PREDKOSC_Y *= Testowa
+        PILKA_PREDKOSC_X *= Testowa
     if pilka_prost.bottom >= OKNOGRY_WYS:
+        Testowa = random.randint(-1,0)
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
         GRACZ_2_PKT = str(int(GRACZ_2_PKT)+1)
+        PILKA_PREDKOSC_Y *= Testowa
+        PILKA_PREDKOSC_X *= Testowa		
     if pygame.key.get_pressed()[K_ESCAPE]:
         quit()
 
@@ -152,6 +171,7 @@ while True:
     OKNOGRY.blit(paletka1_obr, paletka1_prost)  # narysuj w oknie gry paletkę
     OKNOGRY.blit(paletka2_obr, paletka2_prost)  # narysuj paletkę NPC.
     OKNOGRY.blit(pilka_obr, pilka_prost)  # narysuj piłkę
+ 
 
     # przesun piłke po zdarzeniu
     pilka_prost.x += PILKA_PREDKOSC_X
