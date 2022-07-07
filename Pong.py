@@ -4,7 +4,7 @@ from pygame.locals import *
 # inicjacja moduły pygame
 pygame.init()
 # liczba klatek na sekunde
-FPS = 30
+FPS = 60
 # obiekt zegara, który pozwala śledzić czas i odświeżać
 fpsClock = pygame.time.Clock()
 
@@ -16,12 +16,13 @@ OKNOGRY_WYS = 1080
 OKNOGRY = pygame.display.set_mode((OKNOGRY_SZER , OKNOGRY_WYS), 0, 32)
 # tytuł okna gry
 pygame.display.set_caption('Prosty Pong')
-
+bg = pygame.image.load("papaj2.png")
+papajball = pygame.image.load("papajball.png")
 # kolory wykorzystywane w grze składowe RGB zapisane w tuplach
-LT_BLUE = (230, 255, 255)
+LT_BLUE = (50, 50, 50)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+GREEN = (50, 200, 50)
 BLUE = (0, 0, 255)
 
 # szerokość i wysokość paletek
@@ -73,12 +74,13 @@ AI_PREDKOSC = 5
 # szerokość, wysokość prędkość pozioma(X) i pionowa (Y) piłki
 # utworzenie powierzchni dla piłki, narysowanie na niej koła, ustawienie pozycji początkowej
 values = [-1,1]
-PILKA_SZER = 20
-PILKA_WYS = 20
+PILKA_SZER = 40
+PILKA_WYS = 40
 PILKA_PREDKOSC_X = 6*random.choice(values)
 PILKA_PREDKOSC_Y = 6*random.choice(values)
 pilka_obr = pygame.Surface([PILKA_SZER, PILKA_WYS], pygame.SRCALPHA, 32).convert_alpha()
 pygame.draw.ellipse(pilka_obr, GREEN, [0, 0, PILKA_SZER, PILKA_WYS])
+pilka_obr.blit(papajball, (0,0))
 pilka_prost = pilka_obr.get_rect()
 pilka_prost.x = OKNOGRY_SZER/2
 pilka_prost.y = OKNOGRY_WYS/2
@@ -106,24 +108,32 @@ while True:
          if paletka1_prost.x > OKNOGRY_SZER - PALETKA_SZER:
              paletka1_prost = paletka1_prost
          else:
-             paletka1_prost.x += 15
+             paletka1_prost.x += 10
+             if pygame.key.get_pressed()[K_p]:
+                paletka1_prost.x +=25
     if pygame.key.get_pressed()[K_a]:
         if paletka1_prost.x < 0:
             paletka1_prost = paletka1_prost
         else:
-            paletka1_prost.x -= 15
+            paletka1_prost.x -= 10
+            if pygame.key.get_pressed()[K_p]:
+                paletka1_prost.x -=25
 			
     # Sterowanie paletką nr 2 Strzałkami lewo prawo
     if pygame.key.get_pressed()[K_RIGHT]:
          if paletka2_prost.x > OKNOGRY_SZER - PALETKA_SZER:
              paletka2_prost = paletka2_prost
          else:
-             paletka2_prost.x += 15
+             paletka2_prost.x += 10
+             if pygame.key.get_pressed()[K_SPACE]:
+                paletka2_prost.x +=25
     if pygame.key.get_pressed()[K_LEFT]:
         if paletka2_prost.x < 0:
             paletka2_prost = paletka2_prost
         else:
-            paletka2_prost.x -= 15
+            paletka2_prost.x -= 10
+            if pygame.key.get_pressed()[K_SPACE]:
+                paletka2_prost.x -=25
     # AI
    # if pilka_prost.centerx > paletka2_prost.centerx:
    #     paletka2_prost.x += AI_PREDKOSC
@@ -138,40 +148,42 @@ while True:
         PILKA_PREDKOSC_X *= -1
 
     if pilka_prost.colliderect(paletka1_prost) :
-        PILKA_PREDKOSC_Y = (PILKA_PREDKOSC_Y +0.5) *-1 
+        PILKA_PREDKOSC_Y = (PILKA_PREDKOSC_Y +0.4) *-1 
 
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.bottom = paletka1_prost.top
 
     if pilka_prost.colliderect(paletka2_prost) :
-        PILKA_PREDKOSC_Y = (PILKA_PREDKOSC_Y -0.5) *-1 
+        PILKA_PREDKOSC_Y = (PILKA_PREDKOSC_Y -0.4) *-1 
 
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.top = paletka2_prost.bottom
     # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
     
+        
     if pilka_prost.top <= 0:
         
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
-        PILKA_PREDKOSC_X = 6*random.choice(values)
-        PILKA_PREDKOSC_Y = 6*random.choice(values)
+        PILKA_PREDKOSC_X = PILKA_PREDKOSC_X*random.choice(values)
+        PILKA_PREDKOSC_Y = PILKA_PREDKOSC_Y*random.choice(values)
         GRACZ_1_PKT = str(int(GRACZ_1_PKT)+1)
 
     if pilka_prost.bottom >= OKNOGRY_WYS:
 
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
-        PILKA_PREDKOSC_X = 6*random.choice(values)
-        PILKA_PREDKOSC_Y = 6*random.choice(values)
+        PILKA_PREDKOSC_X = PILKA_PREDKOSC_X*random.choice(values)
+        PILKA_PREDKOSC_Y = PILKA_PREDKOSC_Y*random.choice(values)
         GRACZ_2_PKT = str(int(GRACZ_2_PKT)+1)
 	
     if pygame.key.get_pressed()[K_ESCAPE]:
         quit()
 
-
-
-    OKNOGRY.fill(LT_BLUE) # kolor okna gry
+    # kolor okna gry
+    OKNOGRY.fill(LT_BLUE) 
+    # TŁO
+    OKNOGRY.blit(bg, (0, 0)) 
     drukuj_punkty_p1()
     drukuj_punkty_p2()
     OKNOGRY.blit(paletka1_obr, paletka1_prost)  # narysuj w oknie gry paletkę
