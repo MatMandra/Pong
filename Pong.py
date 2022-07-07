@@ -9,8 +9,8 @@ FPS = 30
 fpsClock = pygame.time.Clock()
 
 # szerokość i wysokość okna gry
-OKNOGRY_SZER = 800
-OKNOGRY_WYS = 400
+OKNOGRY_SZER = 1920
+OKNOGRY_WYS = 1080
 
 # przygotowanie powierzchni do rysowania, czyli inicjacja okna gry
 OKNOGRY = pygame.display.set_mode((OKNOGRY_SZER , OKNOGRY_WYS), 0, 32)
@@ -25,20 +25,20 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # szerokość i wysokość paletek
-PALETKA_SZER = 100
+PALETKA_SZER = 200
 PALETKA_WYS = 20
 
 # Inicjacja PALETEK:
 # utworzenie powierzchni dla obrazka, wypełnienie jej kolorem,
 # pobranie prostokątnego obszaru obrazka i ustawienie go na wstępnej pozycji
-PALETKA_1_POZ = (350, 360) # początkowa pozycja paletki gracza
+PALETKA_1_POZ = ((OKNOGRY_SZER/2)-100, (OKNOGRY_WYS - OKNOGRY_WYS/10)) # początkowa pozycja paletki gracza
 paletka1_obr = pygame.Surface([PALETKA_SZER, PALETKA_WYS])
 paletka1_obr.fill(BLUE)
 paletka1_prost = paletka1_obr.get_rect()
 paletka1_prost.x = PALETKA_1_POZ[0]
 paletka1_prost.y = PALETKA_1_POZ[1]
 
-PALETKA_2_POZ = (350, 20) # początkowa pozycja paletki npc
+PALETKA_2_POZ = ((OKNOGRY_SZER/2)-100, OKNOGRY_WYS/10 ) # początkowa pozycja paletki npc
 paletka2_obr = pygame.Surface([PALETKA_SZER, PALETKA_WYS])
 paletka2_obr.fill(RED)
 paletka2_prost = paletka2_obr.get_rect()
@@ -62,6 +62,9 @@ def drukuj_punkty_p2():
     tekst_prost2 = tekst_obr2.get_rect()
     tekst_prost2.center = (OKNOGRY_SZER/2, OKNOGRY_WYS/4)
     OKNOGRY.blit(tekst_obr2, tekst_prost2)
+    
+#def victory():
+    
 
 
 AI_PREDKOSC = 5
@@ -69,10 +72,11 @@ AI_PREDKOSC = 5
 # inicjacja piłki
 # szerokość, wysokość prędkość pozioma(X) i pionowa (Y) piłki
 # utworzenie powierzchni dla piłki, narysowanie na niej koła, ustawienie pozycji początkowej
+values = [-1,1]
 PILKA_SZER = 20
 PILKA_WYS = 20
-PILKA_PREDKOSC_X = 6
-PILKA_PREDKOSC_Y = 6
+PILKA_PREDKOSC_X = 6*random.choice(values)
+PILKA_PREDKOSC_Y = 6*random.choice(values)
 pilka_obr = pygame.Surface([PILKA_SZER, PILKA_WYS], pygame.SRCALPHA, 32).convert_alpha()
 pygame.draw.ellipse(pilka_obr, GREEN, [0, 0, PILKA_SZER, PILKA_WYS])
 pilka_prost = pilka_obr.get_rect()
@@ -128,38 +132,40 @@ while True:
 
     # sprawdzaj kolizje piłki z obiektami
     if pilka_prost.right >= OKNOGRY_SZER:
-        PILKA_PREDKOSC_X *= -1
+        PILKA_PREDKOSC_X *= -1 
 
     if pilka_prost.left <= 0:
         PILKA_PREDKOSC_X *= -1
 
     if pilka_prost.colliderect(paletka1_prost) :
-        PILKA_PREDKOSC_Y *= -1
+        PILKA_PREDKOSC_Y = (PILKA_PREDKOSC_Y +0.5) *-1 
 
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.bottom = paletka1_prost.top
 
     if pilka_prost.colliderect(paletka2_prost) :
-        PILKA_PREDKOSC_Y *= -1
+        PILKA_PREDKOSC_Y = (PILKA_PREDKOSC_Y -0.5) *-1 
 
         # uwzględni nachodzenie piłki na paletkę
         pilka_prost.top = paletka2_prost.bottom
     # Jeśli piłka dotknie top albo bottom okna gry to utaw na pozycji 0.
     
     if pilka_prost.top <= 0:
-        Testowa = random.randint(-1,0)
+        
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
+        PILKA_PREDKOSC_X = 6*random.choice(values)
+        PILKA_PREDKOSC_Y = 6*random.choice(values)
         GRACZ_1_PKT = str(int(GRACZ_1_PKT)+1)
-        PILKA_PREDKOSC_Y *= Testowa
-        PILKA_PREDKOSC_X *= Testowa
+
     if pilka_prost.bottom >= OKNOGRY_WYS:
-        Testowa = random.randint(-1,0)
+
         pilka_prost.x = OKNOGRY_SZER/2
         pilka_prost.y = OKNOGRY_WYS/2
+        PILKA_PREDKOSC_X = 6*random.choice(values)
+        PILKA_PREDKOSC_Y = 6*random.choice(values)
         GRACZ_2_PKT = str(int(GRACZ_2_PKT)+1)
-        PILKA_PREDKOSC_Y *= Testowa
-        PILKA_PREDKOSC_X *= Testowa		
+	
     if pygame.key.get_pressed()[K_ESCAPE]:
         quit()
 
